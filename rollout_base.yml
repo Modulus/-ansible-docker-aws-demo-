@@ -6,3 +6,11 @@
     - s3
   roles:
     - core
+
+- hosts: controller
+  become: no
+  tags:
+    - ec2
+    - node
+  roles:
+    - container

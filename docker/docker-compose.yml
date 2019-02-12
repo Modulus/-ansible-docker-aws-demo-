@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  test-aws:
+    build: 
+      context: ./
+    container_name: test_aws
+    environment:
+      S3BUCKET: s3://shaddap123u89021389120
