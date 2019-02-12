@@ -1,45 +1,46 @@
-# Basic provisioning example
---- 
-- name: Ensure webserver security group exists
-  ec2_group:
-    region: eu-west-1
-    name: webserver
-    profile: "{{aws_profile}}"
-    description: "Websesrver role with ssh"
-    rules:
-      - proto: tcp
-        from_port: 80
-        to_port: 80
-        cidr_ip: 0.0.0.0/0
-      - proto: tcp
-        from_port: 22
-        to_port: 22
-        cidr_ip: 0.0.0.0/0
-      - proto: tcp
-        from_port: 443
-        to_port: 443
-        cidr_ip: 0.0.0.0/0        
+---
+  - name: Ensure docker is installed
+    package:
+      name: docker
+      state: present
+  - name: Add ec2-user to docker role
+    user:
+      name: ec2-user
+      groups: "docker"
+      append: True
 
-- name: Ensure node for container is present
-  ec2:
-    key_name: id_rsa_tv2_aws
-    instance_type: t2.micro
-    image: ami-08935252a36e25f85
-    wait: yes
-    wait_timeout: 500
-    group: webserver
-    exact_count: 1
-    count_tag:
-      App: docker-demo
-      Owner: johnsigvald
-      Name: docker-demo
-    instance_tags:
-      App: docker-demo
-      Owner: johnsigvald
-      Name: docker-demo      
-    region: eu-west-1
-    profile: "{{aws_profile}}"
-  # wait_for: 
-  # port: 22
-  # delay: 10
-  # timeout: 300
+  - name: Enable docker service
+    service:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Ensure docker python is installed
+    pip:
+      name: docker
+
+      
+  - name: Copy docker folder
+    copy:
+      src: "{{playbook_dir}}/docker/"
+      dest: /home/ec2-user/docker/
+      owner: ec2-user
+      group: ec2-user
+      remote_src: no
+      mode: 0644
+    
+  - name: Build container
+    docker_image:
+      path: /home/ec2-user/docker
+      name: docker-demo
+      #tag: v1.1
+      push: no
+  
+  - name: Run container
+    docker_container:
+      image: docker-demo #:v1.1
+      name: demo
+      env:
+          S3BUCKET: "{{s3_bucket_name}}"
+      ports:
+        80:5000

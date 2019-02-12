@@ -1,0 +1,16 @@
+---
+- hosts: controller
+  become: no
+  tasks:
+    - name: Upload pdf
+      aws_s3:
+        src: "{{playbook_dir}}/test.pdf"
+        bucket: "{{s3_bucket_name}}"
+        object: /doc/test.pdf
+        mode: put
+        profile: "{{aws_profile}}"
+- hosts: app
+  become: yes
+  gather_facts: yes
+  roles:
+    - container

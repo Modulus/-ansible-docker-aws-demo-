@@ -30,9 +30,5 @@ ENV S3BUCKET "s3://none"
 RUN chown -R arthur:arthur ./
 USER arthur
 
-RUN ls -la 
-
-run which gunicorn
-
 EXPOSE 5000
 ENTRYPOINT ["/usr/local/bin/gunicorn","-b :5000", "--access-logfile", "-", "--error-logfile",  "-", "main:app"]

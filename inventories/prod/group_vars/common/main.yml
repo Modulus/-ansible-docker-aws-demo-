@@ -1,4 +1,5 @@
 s3_bucket_name: python-pdf-converter-john1jklsduaifsdyuaf7979
+s3_bucket_url: "s3://{{s3_bucket_name}}"
 aws_profile: aws5_docker
 s3_bucket_state: present #absent
 s3_bucket_tags: 
