@@ -1,0 +1,12 @@
+[all]
+controller1 ansible_host=localhost ansible_connection=local ansible_python_interpreter=/home/modulus/.virtualenvs/ansible/bin/python
+
+[controller]
+controller1
+
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_port=22
+ansible_ssh_private_key=~/.ssh/id_rsa
+ansible_ssh_user=vagrant

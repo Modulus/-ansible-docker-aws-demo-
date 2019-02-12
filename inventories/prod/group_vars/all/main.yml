@@ -1,0 +1,7 @@
+s3_bucket_name: python-pdf-converter-john1jklsduaifsdyuaf7979
+aws_profile: aws5_docker
+s3_bucket_state: present #absent
+s3_bucket_tags: 
+  purpose: "demo"
+  owner: "John Sigvald Skauge"
+  comment: "Ikkje tafsa her vennligst!"

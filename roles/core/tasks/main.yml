@@ -1,0 +1,7 @@
+---
+  - name: Ensure s3 bucket exists
+    s3_bucket:
+      profile: "{{aws_profile}}"
+      name: "{{s3_bucket_name}}"
+      state: "{{s3_bucket_state}}"
+     # tags: "{{s3_bucket_tags}}"
